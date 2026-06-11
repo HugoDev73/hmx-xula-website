@@ -1,0 +1,131 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Button from "./Button.astro";
+
+type ProductEntry = CollectionEntry<"products">;
+
+type Props = {
+  product: ProductEntry;
+};
+
+const { product } = Astro.props;
+const { data } = product;
+---
+
+<article
+  class="product-card"
+  style={`
+    --product-accent: ${data.accent};
+    --product-accent-soft: ${data.accentSoft};
+    --product-accent-container: ${data.accentContainer};
+    --product-on-accent: ${data.onAccent};
+  `}
+>
+  <div class="product-card__media" aria-hidden="true">
+    <div class="product-card__bottle">
+      <span class="product-card__bottle-label">{data.name}</span>
+    </div>
+  </div>
+
+  <div class="product-card__content">
+    <p class="product-card__eyebrow">{data.label}</p>
+    <h3 class="product-card__title">{data.name}</h3>
+    <p class="product-card__description">{data.shortDescription}</p>
+    <Button href={data.ctaLink} label={data.cta} variant="secondary" />
+  </div>
+</article>
+
+<style>
+  .product-card {
+    display: grid;
+    grid-template-columns: minmax(120px, 0.85fr) minmax(0, 1fr);
+    gap: var(--space-6);
+    align-items: center;
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+    border-top: 3px solid var(--product-accent);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-mid);
+    box-shadow: var(--shadow-sm);
+    transition:
+      border-color var(--transition-base),
+      box-shadow var(--transition-base),
+      transform var(--transition-base);
+  }
+
+  .product-card:hover {
+    border-color: var(--product-accent-soft);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .product-card__media {
+    display: grid;
+    min-height: 220px;
+    place-items: center;
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(circle at 50% 22%, var(--product-accent-container), transparent 64%),
+      var(--color-surface);
+  }
+
+  .product-card__bottle {
+    display: grid;
+    width: min(100%, 92px);
+    aspect-ratio: 0.38;
+    place-items: center;
+    border: 1px solid var(--product-accent-soft);
+    border-radius: var(--radius-md);
+    background: linear-gradient(180deg, rgba(250, 248, 244, 0.95), rgba(240, 237, 232, 0.55));
+    color: var(--product-on-accent);
+    padding: var(--space-2);
+  }
+
+  .product-card__bottle-label {
+    font-size: 0.625rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    line-height: var(--leading-snug);
+    text-align: center;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  .product-card__content {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-4);
+  }
+
+  .product-card__eyebrow {
+    color: var(--product-accent);
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+  }
+
+  .product-card__title {
+    color: var(--color-on-surface);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .product-card__description {
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 640px) {
+    .product-card {
+      grid-template-columns: 1fr;
+    }
+
+    .product-card__media {
+      min-height: 180px;
+    }
+  }
+</style>

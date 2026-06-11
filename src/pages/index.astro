@@ -1,8 +1,15 @@
 ---
+import { getCollection } from "astro:content";
 import BrandPillars from "../components/sections/BrandPillars.astro";
+import ProductPreview from "../components/sections/ProductPreview.astro";
 import Button from "../components/ui/Button.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const featuredProducts = (await getCollection("products"))
+  .filter((product) => product.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
 ---
 
 <BaseLayout
@@ -30,6 +37,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </section>
 
   <BrandPillars />
+
+  <ProductPreview products={featuredProducts} />
 
   <section class="home-intro u-section">
     <div class="home-intro__inner u-container">

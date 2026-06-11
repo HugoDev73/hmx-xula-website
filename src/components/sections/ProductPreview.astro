@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from "astro:content";
+import ProductCard from "../ui/ProductCard.astro";
+import SectionHeader from "../ui/SectionHeader.astro";
+
+type ProductEntry = CollectionEntry<"products">;
+
+type Props = {
+  products: ProductEntry[];
+};
+
+const { products } = Astro.props;
+---
+
+<section class="product-preview u-section">
+  <div class="product-preview__inner u-container">
+    <SectionHeader
+      eyebrow="Productos XULA"
+      title="Dos formas de brindar con carácter."
+      description="Conoce la expresión esencial de agave Cupeatra y la edición Oro, creada para momentos memorables."
+    />
+
+    <div class="product-preview__grid">
+      {products.map((product) => <ProductCard product={product} />)}
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-preview {
+    background: var(--color-surface);
+  }
+
+  .product-preview__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+    margin-top: var(--space-10);
+  }
+
+  @media (max-width: 900px) {
+    .product-preview__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,294 @@
+---
+import { getCollection } from "astro:content";
+import Button from "../components/ui/Button.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const products = (await getCollection("products")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="Productos - XULA Mezcal Artesanal | Agave Cupeatra y Edición Oro"
+  description="Conoce los productos XULA: mezcal joven artesanal de agave Cupeatra y la edición especial XULA Oro con oro comestible, personalizable para regalos y eventos."
+>
+  <section class="products-intro u-section">
+    <div class="products-intro__inner u-container">
+      <p class="products-intro__eyebrow u-eyebrow">Productos XULA</p>
+      <h1 class="products-intro__title">Nuestros productos</h1>
+      <p class="products-intro__description u-lead">
+        XULA presenta expresiones de mezcal artesanal con origen michoacano,
+        carácter contemporáneo y una presencia pensada para brindar con intención.
+      </p>
+    </div>
+  </section>
+
+  <div class="products-list">
+    {
+      products.map((product) => {
+        const data = product.data;
+
+        return (
+          <article
+            id={data.slug}
+            class="product-section"
+            style={`
+              --product-accent: ${data.accent};
+              --product-accent-soft: ${data.accentSoft};
+              --product-accent-container: ${data.accentContainer};
+              --product-on-accent: ${data.onAccent};
+            `}
+          >
+            <section class="product-section__hero">
+              <div class="product-section__hero-inner u-container">
+                <div class="product-section__copy">
+                  <p class="product-section__eyebrow">{data.label}</p>
+                  <h2 class="product-section__title">{data.name}</h2>
+                  <p class="product-section__tagline u-poetic">“{data.tagline}”</p>
+                  <p class="product-section__description">{data.description}</p>
+                  <Button href={data.ctaLink} label={data.cta} variant="primary" />
+                </div>
+
+                <div class="product-section__visual" aria-hidden="true">
+                  <div class="product-section__bottle">
+                    <span class="product-section__bottle-label">{data.name}</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="product-section__details u-section">
+              <div class="product-section__details-inner u-container">
+                <SectionHeader
+                  eyebrow="Detalles"
+                  title={data.personalizable ? "Una edición para hacer memoria." : "Una expresión joven con carácter."}
+                  description={data.personalizable ? data.personalizationDescription : data.shortDescription}
+                />
+
+                <dl class="product-section__facts">
+                  <div class="product-section__fact">
+                    <dt>Agave</dt>
+                    <dd>{data.agave}</dd>
+                  </div>
+                  <div class="product-section__fact">
+                    <dt>Origen</dt>
+                    <dd>{data.origin}</dd>
+                  </div>
+                  <div class="product-section__fact">
+                    <dt>Alcohol</dt>
+                    <dd>{data.abv}</dd>
+                  </div>
+                  <div class="product-section__fact">
+                    <dt>Contenido</dt>
+                    <dd>{data.size}</dd>
+                  </div>
+                </dl>
+
+                {data.benefits.length > 0 && (
+                  <ul class="product-section__benefits" aria-label={`Beneficios de ${data.name}`}>
+                    {data.benefits.map((benefit) => (
+                      <li class="product-section__benefit">{benefit}</li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </section>
+          </article>
+        );
+      })
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .products-intro {
+    background:
+      radial-gradient(circle at 80% 20%, var(--color-primary-container), transparent 26rem),
+      var(--color-surface);
+  }
+
+  .products-intro__inner {
+    max-width: 760px;
+  }
+
+  .products-intro__title {
+    margin-top: var(--space-4);
+    color: var(--color-on-surface);
+    font-size: var(--text-hero);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .products-intro__description {
+    margin-top: var(--space-6);
+  }
+
+  .products-list {
+    display: grid;
+  }
+
+  .product-section {
+    scroll-margin-top: 80px;
+  }
+
+  .product-section__hero {
+    background:
+      radial-gradient(circle at 78% 28%, var(--product-accent-soft), transparent 24rem),
+      var(--color-surface-dark);
+    color: var(--color-on-surface-dark);
+  }
+
+  .product-section__hero-inner {
+    display: grid;
+    min-height: 640px;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.9fr);
+    align-items: center;
+    gap: var(--space-16);
+    padding-block: var(--space-20);
+  }
+
+  .product-section__copy {
+    display: grid;
+    justify-items: start;
+    gap: var(--space-5);
+    max-width: 620px;
+  }
+
+  .product-section__eyebrow {
+    color: var(--product-accent);
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    line-height: var(--leading-snug);
+    text-transform: uppercase;
+  }
+
+  .product-section__title {
+    color: var(--color-on-surface-dark);
+    font-size: var(--text-display);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .product-section__tagline {
+    color: var(--product-accent);
+    font-size: var(--text-h3);
+  }
+
+  .product-section__description {
+    color: var(--color-on-surface-dark-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .product-section__visual {
+    display: grid;
+    min-height: 420px;
+    place-items: center;
+    border: 1px solid var(--color-border-on-dark);
+    border-radius: var(--radius-2xl);
+    background:
+      linear-gradient(145deg, rgba(250, 248, 244, 0.08), transparent),
+      var(--color-surface-dark-mid);
+  }
+
+  .product-section__bottle {
+    display: grid;
+    width: min(56vw, 190px);
+    aspect-ratio: 0.38;
+    place-items: center;
+    border: 1px solid var(--product-accent-soft);
+    border-radius: var(--radius-lg);
+    color: var(--color-on-surface-dark);
+    padding: var(--space-3);
+  }
+
+  .product-section__bottle-label {
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    line-height: var(--leading-snug);
+    text-align: center;
+    text-transform: uppercase;
+    writing-mode: vertical-rl;
+  }
+
+  .product-section__details {
+    background: var(--color-surface);
+  }
+
+  .product-section__details-inner {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .product-section__facts {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+    margin: 0;
+  }
+
+  .product-section__fact {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-mid);
+  }
+
+  .product-section__fact dt {
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-eyebrow);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+  }
+
+  .product-section__fact dd {
+    margin: var(--space-2) 0 0;
+    color: var(--color-on-surface);
+    font-size: var(--text-body);
+    font-weight: var(--weight-semibold);
+  }
+
+  .product-section__benefits {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .product-section__benefit {
+    border-radius: var(--radius-pill);
+    background: var(--product-accent-container);
+    color: var(--product-on-accent);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  @media (max-width: 900px) {
+    .product-section__hero-inner {
+      min-height: auto;
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+    }
+
+    .product-section__facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .product-section__facts {
+      grid-template-columns: 1fr;
+    }
+
+    .product-section__visual {
+      min-height: 320px;
+    }
+  }
+</style>
