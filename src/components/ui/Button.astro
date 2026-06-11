@@ -1,5 +1,5 @@
 ---
-type ButtonVariant = "primary" | "secondary";
+type ButtonVariant = "primary" | "secondary" | "product";
 
 type Props = {
   href: string;
@@ -70,5 +70,16 @@ const rel = target === "_blank" ? "noreferrer" : undefined;
 
   .button--secondary:hover {
     background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+  }
+
+  .button--product {
+    background: transparent;
+    border-color: var(--product-accent);
+    color: var(--product-accent);
+  }
+
+  .button--product:hover {
+    background: var(--product-accent-container);
+    color: var(--product-on-accent);
   }
 </style>

@@ -1,15 +1,19 @@
 ---
 import { getCollection } from "astro:content";
 import BrandPillars from "../components/sections/BrandPillars.astro";
+import ClosingSection from "../components/sections/ClosingSection.astro";
+import OriginPreview from "../components/sections/OriginPreview.astro";
+import PersonalizationHighlight from "../components/sections/PersonalizationHighlight.astro";
 import ProductPreview from "../components/sections/ProductPreview.astro";
 import Button from "../components/ui/Button.astro";
-import SectionHeader from "../components/ui/SectionHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const featuredProducts = (await getCollection("products"))
+const products = await getCollection("products");
+const featuredProducts = products
   .filter((product) => product.data.featured)
   .sort((a, b) => a.data.order - b.data.order)
   .slice(0, 2);
+const personalizableProduct = products.find((product) => product.data.personalizable);
 ---
 
 <BaseLayout
@@ -40,15 +44,11 @@ const featuredProducts = (await getCollection("products"))
 
   <ProductPreview products={featuredProducts} />
 
-  <section class="home-intro u-section">
-    <div class="home-intro__inner u-container">
-      <SectionHeader
-        eyebrow="Fundación del sitio"
-        title="Una base lista para crecer por fases."
-        description="Esta primera versión define layout, navegación, footer, tokens visuales y estilos globales. Las siguientes fases podrán sumar productos, contenido y secciones sin repetir decisiones base."
-      />
-    </div>
-  </section>
+  {personalizableProduct && <PersonalizationHighlight product={personalizableProduct} />}
+
+  <OriginPreview />
+
+  <ClosingSection />
 </BaseLayout>
 
 <style>
@@ -120,11 +120,6 @@ const featuredProducts = (await getCollection("products"))
     font-size: var(--text-h2);
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-wide);
-  }
-
-  .home-intro__inner {
-    display: grid;
-    justify-items: start;
   }
 
   @media (max-width: 860px) {
