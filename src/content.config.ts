@@ -34,6 +34,30 @@ const products = defineCollection({
   }),
 });
 
+const blog = defineCollection({
+  loader: glob({ base: "./src/content/blog", pattern: "**/*.{md,mdx}" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    seoTitle: z.string(),
+    seoDescription: z.string(),
+    date: z.date(),
+    updatedDate: z.date().optional(),
+    category: z.string(),
+    author: z.string().default("XULA"),
+    readingTime: z.number(),
+    heroImage: z.string(),
+    heroImageAlt: z.string(),
+    slug: z.string(),
+    draft: z.boolean().default(false),
+    featured: z.boolean().default(false),
+    relatedProductSlug: z.string().optional(),
+    ctaLabel: z.string().optional(),
+    ctaLink: z.string().optional(),
+  }),
+});
+
 export const collections = {
+  blog,
   products,
 };

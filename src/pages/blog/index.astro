@@ -1,0 +1,135 @@
+---
+import { getCollection } from "astro:content";
+import BlogCard from "../../components/ui/BlogCard.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const posts = (await getCollection("blog"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const featuredPost = posts.find((post) => post.data.featured) ?? posts[0];
+const remainingPosts = posts.filter((post) => post.id !== featuredPost?.id);
+const categories = [...new Set(posts.map((post) => post.data.category))];
+---
+
+<BaseLayout
+  title="Blog - XULA Mezcal Artesanal"
+  description="Historias sobre mezcal artesanal, agave Cupeatra, rituales, regalos personalizados y cultura de origen michoacano."
+>
+  <section class="blog-index">
+    <div class="blog-index__inner u-container">
+      <header class="blog-index__header">
+        <p class="blog-index__eyebrow u-eyebrow">Bitácora XULA</p>
+        <h1 class="blog-index__title">Historias de agave, fuego y memoria.</h1>
+        <p class="blog-index__description">
+          Una bitácora sobre mezcal artesanal, agave Cupeatra, rituales, regalos
+          personalizados y cultura de origen michoacano.
+        </p>
+      </header>
+
+      {categories.length > 0 && (
+        <ul class="blog-index__categories" aria-label="Categorías del blog">
+          {categories.map((category) => <li>{category}</li>)}
+        </ul>
+      )}
+
+      {featuredPost && (
+        <section class="blog-index__featured" aria-labelledby="featured-post-title">
+          <h2 id="featured-post-title" class="blog-index__section-title">Artículo destacado</h2>
+          <BlogCard post={featuredPost} featured />
+        </section>
+      )}
+
+      {remainingPosts.length > 0 && (
+        <section class="blog-index__posts" aria-labelledby="latest-posts-title">
+          <h2 id="latest-posts-title" class="blog-index__section-title">Más historias</h2>
+          <div class="blog-index__grid">
+            {remainingPosts.map((post) => <BlogCard post={post} />)}
+          </div>
+        </section>
+      )}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-index {
+    background: var(--color-surface);
+    padding-block: var(--section-gap);
+  }
+
+  .blog-index__inner {
+    display: grid;
+    gap: var(--space-12);
+  }
+
+  .blog-index__header {
+    max-width: 820px;
+  }
+
+  .blog-index__title {
+    margin-top: var(--space-4);
+    color: var(--color-on-surface);
+    font-size: var(--text-hero);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .blog-index__description {
+    max-width: 700px;
+    margin-top: var(--space-6);
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .blog-index__categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .blog-index__categories li {
+    border-radius: var(--radius-pill);
+    background: var(--color-secondary-container);
+    color: var(--color-on-secondary-container);
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .blog-index__featured,
+  .blog-index__posts {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .blog-index__section-title {
+    color: var(--color-on-surface);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .blog-index__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+  }
+
+  @media (max-width: 1024px) {
+    .blog-index__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .blog-index__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
