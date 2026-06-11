@@ -39,8 +39,184 @@ const isActivePath = (href: string) => {
         }
       </ul>
     </nav>
+
+    <button
+      class="site-header__toggle"
+      type="button"
+      aria-label="Abrir navegación"
+      aria-controls="mobile-navigation"
+      aria-expanded="false"
+      data-mobile-menu-trigger
+    >
+      <span class="site-header__toggle-line" aria-hidden="true" />
+      <span class="site-header__toggle-line" aria-hidden="true" />
+      <span class="site-header__toggle-line" aria-hidden="true" />
+    </button>
   </div>
+
 </header>
+
+<div
+  id="mobile-navigation"
+  class="mobile-nav"
+  aria-hidden="true"
+  data-mobile-menu
+>
+  <div class="mobile-nav__inner">
+    <div class="mobile-nav__top">
+      <a class="mobile-nav__brand" href="/" aria-label={`${siteConfig.name} inicio`}>
+        {siteConfig.name}
+      </a>
+      <button
+        class="mobile-nav__close"
+        type="button"
+        aria-label="Cerrar navegación"
+        data-mobile-menu-close
+      >
+        <span class="mobile-nav__close-line" aria-hidden="true" />
+        <span class="mobile-nav__close-line mobile-nav__close-line--reverse" aria-hidden="true" />
+      </button>
+    </div>
+
+    <nav class="mobile-nav__nav" aria-label="Navegación móvil">
+      <ul class="mobile-nav__list">
+        {
+          navigationItems.map((item) => (
+            <li>
+              <a
+                class:list={[
+                  "mobile-nav__link",
+                  isActivePath(item.href) && "mobile-nav__link--active",
+                ]}
+                href={item.href}
+                aria-current={isActivePath(item.href) ? "page" : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</div>
+
+<script>
+  const trigger = document.querySelector("[data-mobile-menu-trigger]");
+  const menu = document.querySelector("[data-mobile-menu]");
+  const closeButton = document.querySelector("[data-mobile-menu-close]");
+
+  const focusableSelector = [
+    "a[href]",
+    "button:not([disabled])",
+    "textarea:not([disabled])",
+    "input:not([disabled])",
+    "select:not([disabled])",
+    "[tabindex]:not([tabindex='-1'])",
+  ].join(",");
+
+  let lastFocusedElement = null;
+
+  const getFocusableElements = () => {
+    if (!(menu instanceof HTMLElement)) {
+      return [];
+    }
+
+    return [...menu.querySelectorAll(focusableSelector)].filter(
+      (element) => element instanceof HTMLElement && !element.hasAttribute("disabled"),
+    );
+  };
+
+  const openMenu = () => {
+    if (!(trigger instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) {
+      return;
+    }
+
+    lastFocusedElement = document.activeElement;
+    trigger.setAttribute("aria-expanded", "true");
+    trigger.setAttribute("aria-label", "Cerrar navegación");
+    menu.setAttribute("aria-hidden", "false");
+    document.body.dataset.mobileMenu = "open";
+
+    const focusableElements = getFocusableElements();
+    focusableElements[0]?.focus();
+  };
+
+  const closeMenu = () => {
+    if (!(trigger instanceof HTMLButtonElement) || !(menu instanceof HTMLElement)) {
+      return;
+    }
+
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("aria-label", "Abrir navegación");
+    menu.setAttribute("aria-hidden", "true");
+    delete document.body.dataset.mobileMenu;
+
+    if (lastFocusedElement instanceof HTMLElement) {
+      lastFocusedElement.focus();
+    }
+  };
+
+  const trapFocus = (event) => {
+    if (
+      event.key !== "Tab" ||
+      !(menu instanceof HTMLElement) ||
+      menu.getAttribute("aria-hidden") === "true"
+    ) {
+      return;
+    }
+
+    const focusableElements = getFocusableElements();
+    const firstElement = focusableElements[0];
+    const lastElement = focusableElements[focusableElements.length - 1];
+
+    if (!firstElement || !lastElement) {
+      return;
+    }
+
+    if (event.shiftKey && document.activeElement === firstElement) {
+      event.preventDefault();
+      lastElement.focus();
+    }
+
+    if (!event.shiftKey && document.activeElement === lastElement) {
+      event.preventDefault();
+      firstElement.focus();
+    }
+  };
+
+  trigger?.addEventListener("click", () => {
+    if (!(trigger instanceof HTMLButtonElement)) {
+      return;
+    }
+
+    const isOpen = trigger.getAttribute("aria-expanded") === "true";
+
+    if (isOpen) {
+      closeMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  closeButton?.addEventListener("click", closeMenu);
+
+  menu?.addEventListener("click", (event) => {
+    const target = event.target;
+
+    if (target instanceof HTMLAnchorElement) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+
+    trapFocus(event);
+  });
+</script>
 
 <style>
   .site-header {
@@ -104,6 +280,126 @@ const isActivePath = (href: string) => {
     content: "";
   }
 
+  .site-header__toggle {
+    display: none;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-on-surface);
+    cursor: pointer;
+  }
+
+  .site-header__toggle-line {
+    width: 20px;
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+  }
+
+  .mobile-nav {
+    position: fixed;
+    z-index: 100;
+    inset: 0;
+    display: none;
+    background: var(--color-surface-dark);
+    color: var(--color-on-surface-dark);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-base);
+  }
+
+  .mobile-nav[aria-hidden="false"] {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .mobile-nav__inner {
+    display: grid;
+    min-height: 100dvh;
+    grid-template-rows: auto 1fr;
+    padding: var(--space-4) var(--grid-margin) var(--space-10);
+  }
+
+  .mobile-nav__top {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .mobile-nav__brand {
+    color: var(--color-on-surface-dark);
+    font-size: 1.5rem;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+  }
+
+  .mobile-nav__close {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--color-border-on-dark);
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-on-surface-dark);
+    cursor: pointer;
+  }
+
+  .mobile-nav__close-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    border-radius: var(--radius-pill);
+    background: currentColor;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .mobile-nav__close-line--reverse {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .mobile-nav__nav {
+    display: grid;
+    place-items: center;
+  }
+
+  .mobile-nav__list {
+    display: grid;
+    gap: var(--space-3);
+    width: min(100%, 360px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .mobile-nav__link {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--color-border-on-dark);
+    color: var(--color-on-surface-dark);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    transition: color var(--transition-base);
+  }
+
+  .mobile-nav__link:hover,
+  .mobile-nav__link--active {
+    color: var(--color-secondary);
+  }
+
   @media (max-width: 767px) {
     .site-header__inner {
       min-height: 56px;
@@ -111,6 +407,14 @@ const isActivePath = (href: string) => {
 
     .site-header__nav {
       display: none;
+    }
+
+    .site-header__toggle {
+      display: inline-flex;
+    }
+
+    .mobile-nav {
+      display: block;
     }
   }
 </style>

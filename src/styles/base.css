@@ -25,6 +25,10 @@ body {
   line-height: var(--leading-normal);
 }
 
+body[data-mobile-menu="open"] {
+  overflow: hidden;
+}
+
 body,
 button,
 input,
