@@ -1,0 +1,269 @@
+---
+import ValueGrid from "../components/sections/ValueGrid.astro";
+import Button from "../components/ui/Button.astro";
+import SectionHeader from "../components/ui/SectionHeader.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const brandValues = [
+  {
+    title: "Artesanalidad",
+    description: "Una relación honesta con el origen, el agave y el tiempo que exige el mezcal.",
+  },
+  {
+    title: "Elegancia",
+    description: "Una presencia visual cuidada, premium y contemporánea sin perder carácter mexicano.",
+  },
+  {
+    title: "Autenticidad",
+    description: "Comunicación clara sobre lo confirmado y respeto por la historia que aún se está documentando.",
+  },
+  {
+    title: "Memoria",
+    description: "Botellas y momentos pensados para permanecer más allá del brindis.",
+  },
+  {
+    title: "Celebración",
+    description: "El mezcal como ritual para compartir, regalar y hacer significativo un instante.",
+  },
+  {
+    title: "Diseño",
+    description: "Detalles visuales que convierten la botella en un objeto deseable y memorable.",
+  },
+];
+---
+
+<BaseLayout
+  title="Acerca de XULA - Mezcal Artesanal de Michoacán"
+  description="Conoce la historia detrás de XULA: un mezcal artesanal joven de agave Cupeatra, con identidad mística, elegante y profundamente mexicana."
+>
+  <section class="about-hero">
+    <div class="about-hero__inner u-container">
+      <div class="about-hero__content">
+        <p class="about-hero__eyebrow u-eyebrow">Acerca de XULA</p>
+        <h1 class="about-hero__title">La historia de XULA</h1>
+        <p class="about-hero__description">
+          XULA nace del deseo de crear un mezcal artesanal con una presencia distinta:
+          elegante, mística y profundamente mexicana.
+        </p>
+      </div>
+      <div class="about-hero__mark" aria-hidden="true">
+        <span>XULA</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-story u-section">
+    <div class="about-story__inner u-container">
+      <SectionHeader
+        eyebrow="Origen"
+        title="Michoacán, agave Cupeatra y carácter."
+        description="La identidad de XULA parte del origen michoacano y del agave Cupeatra como centro de su expresión. La marca combina tradición mezcalera con una estética joven, premium y sensorial."
+      />
+
+      <div class="about-story__body">
+        <p>
+          Cada botella busca transformar el acto de beber mezcal en una experiencia más
+          íntima y memorable: un ritual de fuego, alma, diseño y celebración.
+        </p>
+        <p>
+          La historia completa del productor, maestro mezcalero y proceso artesanal se
+          integrará cuando esté confirmada. Mientras tanto, XULA comunica únicamente lo
+          validado: mezcal artesanal, agave Cupeatra y origen Michoacán.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-symbolism u-section">
+    <div class="about-symbolism__inner u-container">
+      <div class="about-symbolism__panel">
+        <p class="about-symbolism__eyebrow u-eyebrow">Universo simbólico</p>
+        <h2 class="about-symbolism__title">Vida, muerte, fuego y memoria.</h2>
+        <p class="about-symbolism__text">
+          XULA toma símbolos mexicanos como la Catrina, el agave y el fuego desde una mirada
+          editorial y refinada. No busca verse folklórica de forma genérica: busca sentirse
+          ritual, seductora y con intención.
+        </p>
+      </div>
+
+      <blockquote class="about-symbolism__quote u-poetic">
+        “Del agave Cupeatra al ritual de brindar.”
+      </blockquote>
+    </div>
+  </section>
+
+  <section class="about-values u-section">
+    <div class="about-values__inner u-container">
+      <SectionHeader
+        eyebrow="Valores"
+        title="Lo que sostiene el carácter de XULA."
+        description="Una marca de mezcal joven, artesanal y premium necesita claridad: cada decisión debe sumar deseo, origen y memoria."
+      />
+      <ValueGrid values={brandValues} />
+    </div>
+  </section>
+
+  <section class="about-closing">
+    <div class="about-closing__inner u-container">
+      <h2 class="about-closing__title">Conoce las expresiones de XULA.</h2>
+      <p class="about-closing__description">
+        Descubre el mezcal joven de agave Cupeatra y la edición Oro, creada para momentos
+        personalizados.
+      </p>
+      <Button href="/productos" label="Ver productos" variant="primary" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    background:
+      radial-gradient(circle at 82% 24%, rgba(7, 190, 184, 0.14), transparent 28rem),
+      var(--color-surface-dark);
+    color: var(--color-on-surface-dark);
+  }
+
+  .about-hero__inner {
+    display: grid;
+    min-height: 560px;
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 0.6fr);
+    align-items: center;
+    gap: var(--space-16);
+    padding-block: var(--space-20);
+  }
+
+  .about-hero__content {
+    max-width: 720px;
+  }
+
+  .about-hero__title {
+    margin-top: var(--space-4);
+    color: var(--color-on-surface-dark);
+    font-size: var(--text-hero);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .about-hero__description {
+    max-width: 620px;
+    margin-top: var(--space-6);
+    color: var(--color-on-surface-dark-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-hero__mark {
+    display: grid;
+    min-height: 320px;
+    place-items: center;
+    border: 1px solid var(--color-border-on-dark);
+    border-radius: var(--radius-2xl);
+    background: var(--color-surface-dark-mid);
+    color: var(--color-on-surface-dark);
+    font-size: var(--text-display);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .about-story {
+    background: var(--color-surface);
+  }
+
+  .about-story__inner,
+  .about-values__inner {
+    display: grid;
+    gap: var(--space-10);
+  }
+
+  .about-story__body {
+    display: grid;
+    max-width: var(--content-narrow);
+    gap: var(--space-5);
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-symbolism {
+    background: var(--color-surface-mid);
+  }
+
+  .about-symbolism__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.8fr);
+    align-items: center;
+    gap: var(--space-10);
+  }
+
+  .about-symbolism__panel {
+    padding: var(--space-8);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-2xl);
+    background: var(--color-surface);
+  }
+
+  .about-symbolism__title {
+    margin-top: var(--space-4);
+    color: var(--color-on-surface);
+    font-size: var(--text-display);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .about-symbolism__text {
+    margin-top: var(--space-5);
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-symbolism__quote {
+    margin: 0;
+    color: var(--color-tertiary);
+    font-size: var(--text-h2);
+    text-align: center;
+  }
+
+  .about-values {
+    background: var(--color-surface);
+  }
+
+  .about-closing {
+    background: var(--color-surface-mid);
+    padding-block: var(--space-16);
+  }
+
+  .about-closing__inner {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-5);
+    text-align: center;
+  }
+
+  .about-closing__title {
+    color: var(--color-on-surface);
+    font-size: var(--text-display);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
+  }
+
+  .about-closing__description {
+    max-width: 620px;
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-lg);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 860px) {
+    .about-hero__inner,
+    .about-symbolism__inner {
+      min-height: auto;
+      grid-template-columns: 1fr;
+      gap: var(--space-10);
+      padding-block: var(--space-16);
+    }
+  }
+</style>

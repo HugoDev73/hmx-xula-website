@@ -1,0 +1,64 @@
+---
+type ValueItem = {
+  title: string;
+  description: string;
+};
+
+type Props = {
+  values: ValueItem[];
+};
+
+const { values } = Astro.props;
+---
+
+<div class="value-grid">
+  {
+    values.map((value) => (
+      <article class="value-grid__item">
+        <h3 class="value-grid__title">{value.title}</h3>
+        <p class="value-grid__description">{value.description}</p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+  }
+
+  .value-grid__item {
+    padding: var(--space-6);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-mid);
+  }
+
+  .value-grid__title {
+    color: var(--color-on-surface);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .value-grid__description {
+    margin-top: var(--space-3);
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 900px) {
+    .value-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .value-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
