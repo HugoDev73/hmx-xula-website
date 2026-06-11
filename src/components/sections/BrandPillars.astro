@@ -1,0 +1,106 @@
+---
+type BrandPillar = {
+  title: string;
+  description: string;
+};
+
+const pillars = [
+  {
+    title: "Michoacán",
+    description: "Origen auténtico y carácter artesanal.",
+  },
+  {
+    title: "Agave Cupeatra",
+    description: "La esencia del mezcal joven de XULA.",
+  },
+  {
+    title: "Ritual",
+    description: "Una experiencia para compartir, regalar y recordar.",
+  },
+] satisfies BrandPillar[];
+---
+
+<section class="brand-pillars" aria-labelledby="brand-pillars-title">
+  <div class="brand-pillars__inner u-container">
+    <h2 id="brand-pillars-title" class="brand-pillars__title">Tres señales de carácter.</h2>
+    <div class="brand-pillars__grid">
+      {
+        pillars.map((pillar) => (
+          <article class="brand-pillars__card">
+            <div class="brand-pillars__mark" aria-hidden="true" />
+            <h3 class="brand-pillars__card-title">{pillar.title}</h3>
+            <p class="brand-pillars__description">{pillar.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .brand-pillars {
+    background: var(--color-surface);
+    padding-block: var(--space-16);
+  }
+
+  .brand-pillars__title {
+    max-width: 760px;
+    margin-bottom: var(--space-8);
+    color: var(--color-on-surface);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .brand-pillars__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--grid-gutter);
+  }
+
+  .brand-pillars__card {
+    display: grid;
+    justify-items: center;
+    gap: var(--space-3);
+    min-height: 188px;
+    padding: var(--space-8);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: var(--radius-xl);
+    background: var(--color-surface-mid);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+
+  .brand-pillars__mark {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--color-secondary);
+    border-radius: 50% 50% 50% 0;
+    color: var(--color-secondary);
+    transform: rotate(-45deg);
+  }
+
+  .brand-pillars__card-title {
+    color: var(--color-on-surface);
+    font-size: var(--text-h3);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+  }
+
+  .brand-pillars__description {
+    max-width: 24ch;
+    color: var(--color-on-surface-muted);
+    font-size: var(--text-body-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 860px) {
+    .brand-pillars__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .brand-pillars__card {
+      min-height: auto;
+    }
+  }
+</style>

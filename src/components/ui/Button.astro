@@ -1,0 +1,74 @@
+---
+type ButtonVariant = "primary" | "secondary";
+
+type Props = {
+  href: string;
+  label: string;
+  variant?: ButtonVariant;
+  ariaLabel?: string;
+  target?: "_blank" | "_self" | "_parent" | "_top";
+};
+
+const { href, label, variant = "primary", ariaLabel, target } = Astro.props;
+const rel = target === "_blank" ? "noreferrer" : undefined;
+---
+
+<a
+  class:list={["button", `button--${variant}`]}
+  href={href}
+  aria-label={ariaLabel}
+  target={target}
+  rel={rel}
+>
+  <span class="button__label">{label}</span>
+</a>
+
+<style>
+  .button {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid transparent;
+    border-radius: var(--radius-pill);
+    font-size: var(--text-button);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-normal);
+    padding: var(--space-3) var(--space-8);
+    text-decoration: none;
+    transition:
+      background-color var(--transition-base),
+      border-color var(--transition-base),
+      color var(--transition-base),
+      transform var(--transition-fast);
+  }
+
+  .button:hover {
+    transform: translateY(-1px);
+  }
+
+  .button:active {
+    transform: scale(0.98);
+  }
+
+  .button--primary {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    color: var(--color-on-secondary);
+  }
+
+  .button--primary:hover {
+    background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-on-surface-dark));
+    border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-on-surface-dark));
+  }
+
+  .button--secondary {
+    background: transparent;
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+
+  .button--secondary:hover {
+    background: color-mix(in srgb, var(--color-secondary) 10%, transparent);
+  }
+</style>

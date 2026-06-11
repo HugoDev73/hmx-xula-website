@@ -1,0 +1,64 @@
+---
+import { socialLinks } from "../../config/social";
+
+type Props = {
+  variant?: "light" | "dark";
+  label?: string;
+};
+
+const { variant = "light", label = "Canales sociales" } = Astro.props;
+---
+
+<ul class:list={["social-links", `social-links--${variant}`]} aria-label={label}>
+  {
+    socialLinks.map((item) => (
+      <li class="social-links__item">
+        <a class="social-links__link" href={item.href} target="_blank" rel="noreferrer">
+          {item.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .social-links__link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid currentColor;
+    border-radius: var(--radius-pill);
+    color: inherit;
+    font-size: var(--text-body-sm);
+    font-weight: var(--weight-medium);
+    padding-inline: var(--space-4);
+    text-decoration: none;
+    transition:
+      background-color var(--transition-base),
+      color var(--transition-base),
+      border-color var(--transition-base);
+  }
+
+  .social-links--light {
+    color: var(--color-on-surface);
+  }
+
+  .social-links--dark {
+    color: var(--color-on-surface-dark);
+  }
+
+  .social-links__link:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+  }
+</style>
