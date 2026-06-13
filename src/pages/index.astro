@@ -34,8 +34,14 @@ const personalizableProduct = products.find((product) => product.data.personaliz
         </div>
       </div>
 
-      <div class="home-hero__visual" aria-hidden="true">
-        <div class="home-hero__bottle-mark">XULA</div>
+      <div class="home-hero__visual">
+        <img
+          class="home-hero__image"
+          src="/images/brand/hero-bottles.png"
+          alt="Botellas de XULA Mezcal Artesanal"
+          width="1200"
+          height="900"
+        />
       </div>
     </div>
   </section>
@@ -98,28 +104,15 @@ const personalizableProduct = products.find((product) => product.data.personaliz
   }
 
   .home-hero__visual {
-    display: grid;
-    min-height: 420px;
-    place-items: center;
-    border: 1px solid var(--color-border-on-dark);
-    border-radius: var(--radius-2xl);
-    background:
-      linear-gradient(145deg, rgba(250, 248, 244, 0.08), transparent),
-      var(--color-surface-dark-mid);
-    box-shadow: var(--shadow-glow-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .home-hero__bottle-mark {
-    display: grid;
-    width: min(58vw, 220px);
-    aspect-ratio: 0.42;
-    place-items: center;
-    border: 1px solid var(--color-border-on-dark);
-    border-radius: var(--radius-lg);
-    color: var(--color-on-surface-dark);
-    font-size: var(--text-h2);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-wide);
+  .home-hero__image {
+    width: min(100%, 560px);
+    height: auto;
+    object-fit: contain;
   }
 
   @media (max-width: 860px) {
@@ -130,8 +123,8 @@ const personalizableProduct = products.find((product) => product.data.personaliz
       padding-block: var(--space-16);
     }
 
-    .home-hero__visual {
-      min-height: 320px;
+    .home-hero__image {
+      width: min(100%, 420px);
     }
   }
 </style>

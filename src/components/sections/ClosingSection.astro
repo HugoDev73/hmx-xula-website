@@ -4,6 +4,14 @@ import SocialLinks from "../ui/SocialLinks.astro";
 
 <section class="closing-section">
   <div class="closing-section__inner u-container">
+    <img
+      class="closing-section__mark"
+      src="/images/brand/icon_agave.png"
+      alt=""
+      width="325"
+      height="522"
+      aria-hidden="true"
+    />
     <p class="closing-section__eyebrow u-eyebrow">Conecta con XULA</p>
     <h2 class="closing-section__title">Descubre el carácter de XULA.</h2>
     <p class="closing-section__description">
@@ -36,6 +44,12 @@ import SocialLinks from "../ui/SocialLinks.astro";
     font-weight: var(--weight-semibold);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
+  }
+
+  .closing-section__mark {
+    width: auto;
+    height: 44px;
+    object-fit: contain;
   }
 
   .closing-section__description {

@@ -16,7 +16,13 @@ const isActivePath = (href: string) => {
 <header class="site-header">
   <div class="site-header__inner u-container">
     <a class="site-header__brand" href="/" aria-label={`${siteConfig.name} inicio`}>
-      {siteConfig.name}
+      <img
+        class="site-header__logo"
+        src="/images/brand/logo_blue.png"
+        alt=""
+        width="706"
+        height="304"
+      />
     </a>
 
     <nav class="site-header__nav" aria-label="Navegación principal">
@@ -63,10 +69,16 @@ const isActivePath = (href: string) => {
   data-mobile-menu
 >
   <div class="mobile-nav__inner">
-    <div class="mobile-nav__top">
-      <a class="mobile-nav__brand" href="/" aria-label={`${siteConfig.name} inicio`}>
-        {siteConfig.name}
-      </a>
+      <div class="mobile-nav__top">
+        <a class="mobile-nav__brand" href="/" aria-label={`${siteConfig.name} inicio`}>
+          <img
+            class="mobile-nav__logo"
+            src="/images/brand/logo_white.png"
+            alt=""
+            width="706"
+            height="304"
+          />
+        </a>
       <button
         class="mobile-nav__close"
         type="button"
@@ -237,11 +249,22 @@ const isActivePath = (href: string) => {
   }
 
   .site-header__brand {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .site-header__logo {
+    width: auto;
+    height: 42px;
+    object-fit: contain;
+  }
+
+  .site-header__brand {
     color: var(--color-on-surface);
     font-size: 1.5rem;
     font-weight: var(--weight-bold);
     letter-spacing: var(--tracking-wide);
-    text-decoration: none;
   }
 
   .site-header__list {
@@ -335,11 +358,15 @@ const isActivePath = (href: string) => {
   }
 
   .mobile-nav__brand {
-    color: var(--color-on-surface-dark);
-    font-size: 1.5rem;
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-wide);
+    display: inline-flex;
+    align-items: center;
     text-decoration: none;
+  }
+
+  .mobile-nav__logo {
+    width: auto;
+    height: 42px;
+    object-fit: contain;
   }
 
   .mobile-nav__close {
@@ -403,6 +430,11 @@ const isActivePath = (href: string) => {
   @media (max-width: 767px) {
     .site-header__inner {
       min-height: 56px;
+    }
+
+    .site-header__logo,
+    .mobile-nav__logo {
+      height: 36px;
     }
 
     .site-header__nav {

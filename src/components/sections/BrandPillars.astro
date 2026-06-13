@@ -27,7 +27,14 @@ const pillars = [
       {
         pillars.map((pillar) => (
           <article class="brand-pillars__card">
-            <div class="brand-pillars__mark" aria-hidden="true" />
+            <img
+              class="brand-pillars__mark"
+              src="/images/brand/icon_agave.png"
+              alt=""
+              width="325"
+              height="522"
+              aria-hidden="true"
+            />
             <h3 class="brand-pillars__card-title">{pillar.title}</h3>
             <p class="brand-pillars__description">{pillar.description}</p>
           </article>
@@ -72,12 +79,9 @@ const pillars = [
   }
 
   .brand-pillars__mark {
-    width: 44px;
-    height: 44px;
-    border: 1px solid var(--color-secondary);
-    border-radius: 50% 50% 50% 0;
-    color: var(--color-secondary);
-    transform: rotate(-45deg);
+    width: auto;
+    height: 48px;
+    object-fit: contain;
   }
 
   .brand-pillars__card-title {
