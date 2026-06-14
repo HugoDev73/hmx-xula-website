@@ -5,13 +5,50 @@ import { join } from "node:path";
 import Button from "../components/ui/Button.astro";
 import SectionHeader from "../components/ui/SectionHeader.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { absoluteUrl, getAbsoluteImage } from "../utils/schema";
 
 const products = (await getCollection("products")).sort((a, b) => a.data.order - b.data.order);
+const productSchemas = products.map((product) => ({
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.data.name,
+  brand: {
+    "@type": "Brand",
+    name: "XULA",
+  },
+  category: "Mezcal artesanal",
+  description: product.data.description,
+  image: getAbsoluteImage(product.data.image),
+  url: absoluteUrl(product.data.ctaLink),
+  additionalProperty: [
+    {
+      "@type": "PropertyValue",
+      name: "Agave",
+      value: product.data.agave,
+    },
+    {
+      "@type": "PropertyValue",
+      name: "Origen",
+      value: product.data.origin,
+    },
+    {
+      "@type": "PropertyValue",
+      name: "Alcohol",
+      value: product.data.abv,
+    },
+    {
+      "@type": "PropertyValue",
+      name: "Contenido",
+      value: product.data.size,
+    },
+  ],
+}));
 ---
 
 <BaseLayout
   title="Productos - XULA Mezcal Artesanal | Agave Cupeatra y Edición Oro"
   description="Conoce los productos XULA: mezcal joven artesanal de agave Cupeatra y la edición especial XULA Oro con oro comestible, personalizable para regalos y eventos."
+  structuredData={productSchemas}
 >
   <section class="products-intro u-section">
     <div class="products-intro__inner u-container">

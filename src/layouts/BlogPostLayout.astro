@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import Button from "../components/ui/Button.astro";
+import { siteConfig } from "../config/site";
+import { absoluteUrl, getAbsoluteImage } from "../utils/schema";
 import BaseLayout from "./BaseLayout.astro";
 
 type BlogEntry = CollectionEntry<"blog">;
@@ -16,9 +18,39 @@ const formattedDate = data.date.toLocaleDateString("es-MX", {
   month: "long",
   year: "numeric",
 });
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: data.title,
+  description: data.seoDescription,
+  image: getAbsoluteImage(data.heroImage),
+  datePublished: data.date.toISOString(),
+  dateModified: (data.updatedDate ?? data.date).toISOString(),
+  author: {
+    "@type": "Organization",
+    name: data.author,
+  },
+  publisher: {
+    "@type": "Organization",
+    name: siteConfig.legalName,
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl("/images/brand/logo_blue.png"),
+    },
+  },
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": absoluteUrl(`/blog/${data.slug}`),
+  },
+};
 ---
 
-<BaseLayout title={data.seoTitle} description={data.seoDescription} image={data.heroImage}>
+<BaseLayout
+  title={data.seoTitle}
+  description={data.seoDescription}
+  image={data.heroImage}
+  structuredData={articleSchema}
+>
   <article class="blog-post">
     <header class="blog-post__hero">
       <div class="blog-post__hero-inner u-container">
